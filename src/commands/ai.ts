@@ -13,7 +13,7 @@ export const handler = async () => {
     {
       role: 'system',
       content:
-        "You are an assistant that interacts with the Unleash API. You should ask the user in case you're missing any required information. Ask the user, never assume information that you're not sure about."
+        "You are an assistant that interacts with the Unleash API (flags, variants, strategies, environments, projects). You should ask the user in case you're missing any required information. Ask the user, never assume information that you're not sure about."
     }
   ]
 
