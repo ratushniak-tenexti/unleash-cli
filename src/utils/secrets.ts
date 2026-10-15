@@ -1,4 +1,4 @@
-import { execFileSync } from 'child_process'
+import { execFileSync, spawnSync } from 'child_process'
 
 const SERVICE = 'unleash-cli'
 
@@ -16,16 +16,12 @@ const run = (cmd: string, args: string[], input?: string) =>
 // macOS: Keychain. `security` only accepts the password as an argument.
 // Other platforms: unsupported, callers fall back to config.json.
 export const keyringAvailable = (): boolean => {
-  try {
-    if (process.platform === 'linux') {
-      run('secret-tool', ['--version'])
-      return true
-    }
-    if (process.platform === 'darwin') return true
-  } catch {
-    // not installed
-  }
-  return false
+  if (process.platform === 'darwin') return true
+  if (process.platform !== 'linux') return false
+  // secret-tool has no --version and exits non-zero without arguments, so only
+  // check that the binary can be started.
+  const result = spawnSync('secret-tool', [], { stdio: 'ignore' })
+  return result.error === undefined
 }
 
 export const getSecret = (name: SecretName): string | undefined => {

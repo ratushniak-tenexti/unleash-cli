@@ -68,7 +68,7 @@ const save = async ({
     spinner.success({
       text: inKeyring
         ? 'Configuration saved. The token is stored in your system keyring.'
-        : 'Configuration saved. No keyring found (install libsecret-tools), so the token was saved in plain text.'
+        : 'Configuration saved. Could not use the system keyring (is libsecret-tools installed and the keyring unlocked?), so the token was saved in plain text.'
     })
   } catch (error: any) {
     spinner.error({ text: error.message })

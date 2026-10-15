@@ -28,9 +28,15 @@ export const config = {
     nconf.set('URL', input.url + (input.url.endsWith('/') ? '' : '/'))
     let inKeyring = false
     if (keyringAvailable()) {
-      setSecret('unleash-token', input.token)
+      try {
+        setSecret('unleash-token', input.token)
+        inKeyring = true
+      } catch {
+        // locked or unreachable keyring: fall through to plain text
+      }
+    }
+    if (inKeyring) {
       nconf.clear('TOKEN')
-      inKeyring = true
     } else {
       nconf.set('TOKEN', input.token)
     }
