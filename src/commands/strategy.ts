@@ -17,7 +17,7 @@ export const command: string =
 export const desc: string =
   'List, add, update or delete activation strategies in an environment. add/update take the strategy JSON (name, parameters, constraints, variants, segments, disabled) from --file or stdin. Prints JSON'
 
-const examples = String.raw`Body for "add" / "update" (get ids with "strategy list"; "update" replaces the strategy):
+export const examples = String.raw`Body for "add" / "update" (get ids with "strategy list"; "update" replaces the strategy):
   - name: flexibleRollout, default, userWithId, remoteAddress, ...
   - parameters: object whose values are all STRINGS,
       flexibleRollout: {"rollout":"100","stickiness":"default","groupId":"<flag name>"}

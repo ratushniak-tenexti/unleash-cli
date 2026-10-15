@@ -15,7 +15,7 @@ export const command: string = 'toggle <feature-toggle>'
 export const desc: string = 'Shows feature toggle information'
 export const aliases: string[] = ['t']
 
-const examples = String.raw`With --json the output is the full flag (environments, strategies, variants); filter it with jq:
+export const examples = String.raw`With --json the output is the full flag (environments, strategies, variants); filter it with jq:
   unleash toggle my-flag --json | jq '.environments[] | {name, enabled}'
   unleash toggle my-flag --json | jq '.environments[] | select(.name=="development") | .strategies'
   unleash toggle my-flag --json | jq -r '.environments[].strategies[]? | .id'

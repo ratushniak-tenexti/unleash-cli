@@ -48,6 +48,8 @@ Use `unleash -h` to see all the available commands.
 
 ## Scripting / AI agents
 
+Run `unleash docs` for the whole usage guide in one call (commands, body shapes, tips).
+
 These commands never prompt, print JSON on stdout, print a JSON error (`error`, `status`, `details`) on stderr and exit non-zero on failure. All take `-p <project>` (default `default`) and, where relevant, `-e <environment>` (default `development`).
 
 ```bash

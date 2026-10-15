@@ -13,11 +13,11 @@ import {
 const CONFIG_DIR = path.join(os.homedir(), '.config', 'unleash-cli')
 fs.mkdirSync(CONFIG_DIR, { recursive: true })
 
-nconf.argv().env().file({ file: path.join(CONFIG_DIR, 'config.json') })
+nconf.env().file({ file: path.join(CONFIG_DIR, 'config.json') })
 
 export const config = {
   url: nconf.get('URL'),
-  // Precedence: env/argv > keyring > legacy plain-text value in config.json.
+  // Precedence: env > keyring > legacy plain-text value in config.json.
   get token(): string | undefined {
     return nconf.get('TOKEN') ?? getSecret('unleash-token')
   },

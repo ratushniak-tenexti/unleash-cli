@@ -14,7 +14,7 @@ export const command: string = 'list'
 export const desc: string = 'List feature toggles'
 export const aliases: string[] = ['ls']
 
-const examples = String.raw`With --json the output is {"features":[...]} (large: every field of every flag), so filter it with jq:
+export const examples = String.raw`With --json the output is {"features":[...]} (large: every field of every flag), so filter it with jq:
   unleash list --json | jq -r '.features[].name'
   unleash list --json | jq -r '.features[] | select(.stale) | .name'
   unleash list --json | jq '.features[] | {name, type, lastSeenAt}'
