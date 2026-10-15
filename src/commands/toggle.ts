@@ -15,6 +15,12 @@ export const command: string = 'toggle <feature-toggle>'
 export const desc: string = 'Shows feature toggle information'
 export const aliases: string[] = ['t']
 
+const examples = String.raw`With --json the output is the full flag (environments, strategies, variants); filter it with jq:
+  unleash toggle my-flag --json | jq '.environments[] | {name, enabled}'
+  unleash toggle my-flag --json | jq '.environments[] | select(.name=="development") | .strategies'
+  unleash toggle my-flag --json | jq -r '.environments[].strategies[]? | .id'
+  unleash toggle my-flag --json | jq '.environments[] | select(.name=="development") | .variants'`
+
 export const builder: CommandBuilder<Options, Options> = yargs =>
   yargs
     .options({
@@ -22,6 +28,8 @@ export const builder: CommandBuilder<Options, Options> = yargs =>
       json: { type: 'boolean', default: false }
     })
     .positional('featureToggle', { type: 'string', demandOption: true })
+    .wrap(null)
+    .epilogue(examples)
 
 export const handler = async (argv: Arguments<Options>) => {
   const { featureToggle, project, json } = argv
