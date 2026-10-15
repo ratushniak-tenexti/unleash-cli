@@ -46,9 +46,13 @@ The token is stored in your system keyring (`secret-tool` on Linux, Keychain on 
 
 Use `unleash -h` to see all the available commands.
 
+Optional requirements: `jq` for `--jq` (see below) and, on Linux, `libsecret-tools` (`secret-tool`) to store the token in the keyring; without it the token is saved in plain text in the config file.
+
 ## Scripting / AI agents
 
 Run `unleash docs` for the whole usage guide in one call (commands, body shapes, tips).
+
+**Dependency:** `--jq` runs the system [`jq`](https://jqlang.org) binary, so it must be installed and on your `PATH` (for example `pacman -S jq`, `apt install jq` or `brew install jq`). Nothing else needs it: without `--jq` the CLI has no extra requirements.
 
 These commands never prompt, print JSON on stdout, print a JSON error (`error`, `status`, `details`) on stderr and exit non-zero on failure. All take `-p <project>` (default `default`) and, where relevant, `-e <environment>` (default `development`).
 
