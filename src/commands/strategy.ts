@@ -17,6 +17,20 @@ export const command: string =
 export const desc: string =
   'List, add, update or delete activation strategies in an environment. add/update take the strategy JSON (name, parameters, constraints, variants, segments, disabled) from --file or stdin. Prints JSON'
 
+const examples = String.raw`Body for "add" / "update" (get ids with "strategy list"; "update" replaces the strategy):
+  - name: flexibleRollout, default, userWithId, remoteAddress, ...
+  - parameters: object whose values are all STRINGS,
+      flexibleRollout: {"rollout":"100","stickiness":"default","groupId":"<flag name>"}
+  - constraints: [{"contextName":"environment","operator":"IN","values":["x"],"inverted":false,"caseInsensitive":false}]
+  - variants: optional strategy variants (same shape as "unleash variants -h"; weights sum to 1000)
+  - segments: segment ids ([] for none); disabled: true|false
+
+Example:
+  echo '{"name":"flexibleRollout","parameters":{"rollout":"100","stickiness":"default","groupId":"my-flag"},"constraints":[{"contextName":"environment","operator":"IN","values":["prod"]}],"variants":[],"segments":[],"disabled":false}' \
+    | unleash strategy add my-flag -e development
+
+A toggle only takes effect in an environment once it is enabled: unleash on my-flag -e development`
+
 export const builder: CommandBuilder<Options, Options> = yargs =>
   yargs
     .options({
@@ -30,6 +44,8 @@ export const builder: CommandBuilder<Options, Options> = yargs =>
     })
     .positional('featureToggle', { type: 'string', demandOption: true })
     .positional('strategyId', { type: 'string' })
+    .wrap(null)
+    .epilogue(examples)
 
 export const handler = (argv: Arguments<Options>) =>
   run(async () => {
