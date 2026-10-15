@@ -55,8 +55,8 @@ These commands never prompt, print JSON on stdout, print a JSON error (`error`, 
 ```bash
 unleash projects
 unleash environments
-unleash list --json -p default
-unleash toggle my-flag --json              # flag with environments, strategies, variants
+unleash list --jq '.features[].name' -p default   # table without --jq; --jq needs jq installed
+unleash toggle my-flag --jq '.environments[] | {name, enabled}'
 unleash create my-flag -t experiment -d "description"
 unleash update my-flag --description "new" --stale false
 unleash on my-flag -e development          # or: off

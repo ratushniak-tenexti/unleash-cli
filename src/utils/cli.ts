@@ -1,13 +1,39 @@
 import fs from 'fs'
+import { spawnSync } from 'child_process'
 
-export const print = (data: unknown) =>
-  console.log(
-    JSON.stringify(
-      data === undefined || data === '' ? { success: true } : data,
-      null,
-      2
-    )
+let jqExpression: string | undefined
+
+// Set from the global --jq option. When set, JSON output goes through jq.
+export const setJq = (expression?: string) => {
+  jqExpression = expression
+}
+
+export const jqActive = () => jqExpression !== undefined
+
+// Like `jq -r`: strings are printed raw, everything else as JSON.
+const applyJq = (json: string, expression: string) => {
+  const result = spawnSync('jq', ['-r', expression], {
+    input: json,
+    encoding: 'utf8',
+    maxBuffer: 256 * 1024 * 1024
+  })
+  if ((result.error as NodeJS.ErrnoException | undefined)?.code === 'ENOENT') {
+    throw new Error('--jq needs the jq binary on your PATH (https://jqlang.org)')
+  }
+  if (result.status !== 0) {
+    throw new Error(result.stderr.trim() || 'jq failed')
+  }
+  return result.stdout.replace(/\n$/, '')
+}
+
+export const print = (data: unknown) => {
+  const json = JSON.stringify(
+    data === undefined || data === '' ? { success: true } : data,
+    null,
+    2
   )
+  console.log(jqExpression === undefined ? json : applyJq(json, jqExpression))
+}
 
 // Compact, machine-readable error. Unleash puts its validation messages in
 // response.data.details (or message).

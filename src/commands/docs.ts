@@ -26,16 +26,17 @@ Setup
 Conventions
   -p, --project      project id, default "default"
   -e, --environment  environment, default "development"
-  JSON commands      print JSON on stdout; errors are JSON on stderr
+  JSON commands      print JSON on stdout (filterable with --jq); errors are JSON on stderr
                      ({"error","status","details"}) and the exit code is non-zero
   Request bodies     (variants, strategy) come from --file <path> or stdin
   Flags              per command: "unleash <command> -h" (same as --help), e.g.
                      create takes -t/--type, -d/--description; enable/disable are "on"/"off"
 
 Keep output small
-  "list" and "toggle" print a compact table by default; prefer it when you only
-  need to look. "--json" prints EVERY field of every flag and is large, so pipe
-  it through jq and select what you need (examples below). Do not dump it raw.`
+  "list" and "toggle" print a compact table by default. Add --jq '<expr>' (any
+  command that prints JSON; needs jq installed) to get JSON filtered by jq and
+  select just what you need, e.g. unleash list --jq '.features[].name'.
+  Strings come out raw (like jq -r). Unfiltered JSON of "list" is very large.`
 
 const sections: [string, { command: string; desc?: string; examples?: string }][] =
   [

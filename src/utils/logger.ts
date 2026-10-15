@@ -90,7 +90,7 @@ const featureTogglesTable = (featureToggles: FeatureToggleListItem[]) => {
     'State'
   ]
   const rows = featureToggles
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .sort((a, b) => (b.createdAt ?? '').localeCompare(a.createdAt ?? ''))
     .map(featureToggle => [
       featureToggle.name,
       featureToggle.description,
