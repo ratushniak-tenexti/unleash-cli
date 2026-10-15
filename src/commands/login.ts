@@ -52,48 +52,23 @@ export const handler = async () => {
     }
   ])
 
-  const { setupOpenAI } = await inquirer.prompt<{ setupOpenAI: boolean }>([
-    {
-      message: 'Setup OpenAI API Token?',
-      name: 'setupOpenAI',
-      type: 'confirm',
-      default: false
-    }
-  ])
-
-  if (!setupOpenAI) {
-    await save({ url, token })
-    return
-  }
-
-  const { openAIToken } = await inquirer.prompt<{ openAIToken: string }>([
-    {
-      message: 'OpenAI API Token:',
-      name: 'openAIToken',
-      type: 'password',
-      mask: '*'
-    }
-  ])
-
-  await save({ url, token, openAIToken })
+  await save({ url, token })
 }
 
 const save = async ({
   url,
-  token,
-  openAIToken
+  token
 }: {
   url: string
   token: string
-  openAIToken?: string
 }) => {
   const spinner = createSpinner('Saving...').start()
   try {
-    const inKeyring = config.save({ url, token, openAIToken })
+    const inKeyring = config.save({ url, token })
     spinner.success({
       text: inKeyring
-        ? 'Configuration saved. Tokens are stored in your system keyring.'
-        : 'Configuration saved. No keyring found (install libsecret-tools), so tokens were saved in plain text.'
+        ? 'Configuration saved. The token is stored in your system keyring.'
+        : 'Configuration saved. No keyring found (install libsecret-tools), so the token was saved in plain text.'
     })
   } catch (error: any) {
     spinner.error({ text: error.message })

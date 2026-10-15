@@ -2,7 +2,7 @@ import { execFileSync } from 'child_process'
 
 const SERVICE = 'unleash-cli'
 
-export type SecretName = 'unleash-token' | 'openai-token'
+export type SecretName = 'unleash-token'
 
 const run = (cmd: string, args: string[], input?: string) =>
   execFileSync(cmd, args, {
