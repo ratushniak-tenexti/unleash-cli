@@ -10,17 +10,29 @@ Homebrew:
   brew install nunogois/brews/unleash
   ```
 
-npm / yarn global install:
+npm / pnpm global install:
   
   ```bash
   npm i -g @nunogois/unleash-cli
   ```
 
   ```bash
-  yarn global add @nunogois/unleash-cli
+  pnpm add -g @nunogois/unleash-cli
   ```
 
 Or you can download the [latest release](https://github.com/nunogois/unleash-cli/releases/latest) instead.
+
+## Development
+
+This fork uses pnpm. To run your local checkout as the `unleash` binary:
+
+  ```bash
+  pnpm install
+  pnpm build
+  pnpm add --global link:$(pwd)
+  ```
+
+Re-run `pnpm build` after changing the code (or use `pnpm dev <command>` to run from source). Undo with `pnpm remove --global @nunogois/unleash-cli`. (pnpm 11's `pnpm link` only links into another project, so a global binary uses `pnpm add --global link:<path>`.)
 
 ## Setup
 

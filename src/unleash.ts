@@ -6,6 +6,7 @@ import { hideBin } from 'yargs/helpers'
 import handleError from './utils/handleError'
 
 yargs(hideBin(process.argv))
+  .scriptName('unleash')
   .commandDir('commands', {
     extensions: ['js', 'ts']
   })
