@@ -45,8 +45,10 @@ export const handler = async () => {
 
   const { token } = await inquirer.prompt<{ token: string }>([
     {
-      message: 'Unleash Token:',
-      name: 'token'
+      message: 'Unleash Token (personal access token is enough):',
+      name: 'token',
+      type: 'password',
+      mask: '*'
     }
   ])
 
@@ -67,7 +69,9 @@ export const handler = async () => {
   const { openAIToken } = await inquirer.prompt<{ openAIToken: string }>([
     {
       message: 'OpenAI API Token:',
-      name: 'openAIToken'
+      name: 'openAIToken',
+      type: 'password',
+      mask: '*'
     }
   ])
 
@@ -85,8 +89,12 @@ const save = async ({
 }) => {
   const spinner = createSpinner('Saving...').start()
   try {
-    config.save({ url, token, openAIToken })
-    spinner.success({ text: 'Configuration saved successfully.' })
+    const inKeyring = config.save({ url, token, openAIToken })
+    spinner.success({
+      text: inKeyring
+        ? 'Configuration saved. Tokens are stored in your system keyring.'
+        : 'Configuration saved. No keyring found (install libsecret-tools), so tokens were saved in plain text.'
+    })
   } catch (error: any) {
     spinner.error({ text: error.message })
   }
