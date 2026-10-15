@@ -30,5 +30,6 @@ export const handler = async (argv: Arguments<Options>) => {
     spinner.success({ text: `${featureToggle} disabled successfully.` })
   } catch (error: any) {
     spinner.error({ text: error.message })
+    process.exitCode = 1
   }
 }
